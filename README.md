@@ -37,13 +37,15 @@ Follow these steps to set up the project:
 
    ```bash
    cp .env.example .env
-   # Edit .env with your configuration
+   # Edit .env with your configuration see .env.example for reference
    ```
 
 4. **Run the better-auth migration**
 
    ```bash
-   npx @better-auth/cli migrate --db ./server/sqlite.db --migrations ./server/src/better-auth_migrations
+   cd /server
+   npx @better-auth/cli migrate
+   cd ..
    ```
 
 5. **Start development servers:**
