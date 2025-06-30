@@ -5,8 +5,10 @@ This is a **React Hono Starter Kit** that integrates with **Better Auth** for au
 ## Features
 
 - **React** for the frontend.
+- **Tailwind CSS** for styling.
 - **Hono** as the backend framework.
 - **Better Auth** for authentication and session management.
+- **Sqlite** wil be used as the Database for better-auth but you can choose the db of your choice for anything else.
 - Pre-configured with TypeScript for type safety.
 
 ## Prerequisites
