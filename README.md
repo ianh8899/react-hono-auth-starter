@@ -18,6 +18,8 @@ Before you begin, ensure you have the following installed:
 - [Node.js](https://nodejs.org/)
 - [npm](https://www.npmjs.com/)
 
+Also create a new project in Supabase.
+
 ## Installation
 
 Follow these steps to set up the project:
@@ -49,6 +51,8 @@ Follow these steps to set up the project:
    npx @better-auth/cli migrate
    cd ..
    ```
+
+   Then run the SQL from the migration file in SQL editor in Supabase
 
 5. **Start development servers:**
 
