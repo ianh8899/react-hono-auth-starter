@@ -8,7 +8,7 @@ This is a **React Hono Starter Kit** that integrates with **Better Auth** for au
 - **Tailwind CSS** for styling.
 - **Hono** as the backend framework.
 - **Better Auth** for authentication and session management.
-- **Sqlite** wil be used as the Database for better-auth but you can choose the db of your choice for anything else.
+- **PostgreSQL** database with Docker setup for better-auth and application data.
 - Pre-configured with TypeScript for type safety.
 
 ## Prerequisites
@@ -30,13 +30,7 @@ Follow these steps to set up the project:
    cd react-hono-starter-kit
    ```
 
-2. **Install dependencies:**
-
-   ```bash
-   npm install
-   ```
-
-3. **Set up environment variables:**
+2. **Set up environment variables:**
 
    ```bash
    cp .env.example .env
@@ -44,7 +38,7 @@ Follow these steps to set up the project:
    # When running docker make sure you update environment variables in the compose.yaml file
    ```
 
-4. **Start all services (includes automatic migration):**
+3. **Start all services in Docker (includes automatic migration):**
 
    ```bash
    docker compose up -w
@@ -52,14 +46,42 @@ Follow these steps to set up the project:
 
    This will:
 
+   - Install dependencies
+   - Build the Docker images
    - Start PostgreSQL
    - Run better-auth migrations automatically
    - Start the Hono API server (after migration completes)
    - Start the React frontend
-   - track changes made in the client and server /src folders and live update the running container
+   - Track changes made in the client and server /src folders and live update the running container
+
+4. **Optional: Install dependencies locally (for IDE support):**
+
+   ```bash
+   # Optional - for better IDE support and local testing
+   npm install
+   cd client && npm install
+   cd ../server && npm install
+   ```
 
    Services will be available at:
 
    - React app: http://localhost:5173
    - Hono API: http://localhost:3000
    - Database admin (Adminer): http://localhost:8080
+
+## Alternative Development (without Docker)
+
+If you prefer to run without Docker:
+
+```bash
+# Install dependencies
+npm install
+
+# Start PostgreSQL (you'll need it running locally)
+# Run migrations manually
+cd server && npx @better-auth/cli migrate
+
+# Start development servers
+npm run dev:client  # In one terminal
+npm run dev:server  # In another terminal
+```
