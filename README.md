@@ -2,6 +2,8 @@
 
 This is a **React Hono Starter Kit** that integrates with **Better Auth** for authentication. It provides a boilerplate for building modern web applications with a React frontend and a Hono-based backend.
 
+Checkout the supabase & docker-postgres branches to change up the configuration.
+
 ## Features
 
 - **React** for the frontend.
