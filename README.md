@@ -42,22 +42,25 @@ Follow these steps to set up the project:
    # Edit .env with your configuration see .env.example for reference
    ```
 
-4. **Run the better-auth migration**
+4. **Start all services (includes automatic migration):**
 
    ```bash
-   cd /server
-   npx @better-auth/cli migrate
-   cd ..
+   # First time and ongoing - this handles everything
+   docker compose up --build
+
+   # Or run migration manually first if needed
+   docker compose run --rm migrate
    ```
 
-5. **Start development servers:**
+   This will:
 
-   ```bash
-   npm run dev:client
-   npm run dev:server
-   ```
+   - Start PostgreSQL
+   - Run better-auth migrations automatically
+   - Start the API server (after migration completes)
+   - Start the React frontend
 
-   This will start:
+   Services will be available at:
 
-   - React app on http://localhost:5173
-   - Hono API on http://localhost:3000
+   - React app: http://localhost:5173
+   - Hono API: http://localhost:3000
+   - Database admin (Adminer): http://localhost:8080

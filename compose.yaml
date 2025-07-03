@@ -1,0 +1,91 @@
+version: "3.8"
+
+services:
+  web:
+    depends_on:
+      - api
+
+    build:
+      context: .
+      dockerfile: ./client/Dockerfile
+
+    ports:
+      - 5173:5173
+
+    develop:
+      watch:
+        - path: ./client/package.json
+          action: rebuild
+        - path: ./client/package-lock.json
+          action: rebuild
+        - path: ./client
+          target: /app/client
+          action: sync
+
+  # Migration service to run better-auth migrations
+  migrate:
+    build:
+      context: .
+      dockerfile: ./server/Dockerfile
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      DATABASE_URL: postgres://postgres:password@postgres:5432/authdb
+    command: ["sh", "-c", "echo 'y' | npx @better-auth/cli migrate"]
+    working_dir: /app/server
+
+  api:
+    depends_on:
+      postgres:
+        condition: service_healthy
+      migrate:
+        condition: service_completed_successfully
+    build:
+      context: .
+      dockerfile: ./server/Dockerfile
+    ports:
+      - 3000:3000
+    environment:
+      BETTER_AUTH_SECRET: open-ssl-rand--base64-32
+      BETTER_AUTH_URL: http://localhost:3000
+      GITHUB_CLIENT_ID:
+      GITHUB_CLIENT_SECRET:
+      DATABASE_URL: postgres://postgres:password@postgres:5432/authdb
+
+    develop:
+      watch:
+        - path: ./server/package.json
+          action: rebuild
+        - path: ./server
+          target: /app/server
+          action: sync
+
+  postgres:
+    image: postgres:15-alpine
+    environment:
+      POSTGRES_DB: authdb
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+      POSTGRES_HOST_AUTH_METHOD: md5
+    ports:
+      - 5432:5432
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  adminer:
+    image: adminer
+    ports:
+      - 8080:8080
+    depends_on:
+      - postgres
+    environment:
+      ADMINER_DEFAULT_SERVER: postgres
+
+volumes:
+  postgres_data:
