@@ -8,7 +8,7 @@ This is a **React Hono Starter Kit** that integrates with **Better Auth** for au
 - **Tailwind CSS** for styling.
 - **Hono** as the backend framework.
 - **Better Auth** for authentication and session management.
-- **Sqlite** wil be used as the Database for better-auth but you can choose the db of your choice for anything else.
+- **Supabase** will be used as the Database for better-auth but you can choose the db of your choice for anything else.
 - Pre-configured with TypeScript for type safety.
 
 ## Prerequisites
@@ -18,7 +18,7 @@ Before you begin, ensure you have the following installed:
 - [Node.js](https://nodejs.org/)
 - [npm](https://www.npmjs.com/)
 
-Also create a new project in Supabase.
+Also create a new project in Supabase (https://supabase.com/)
 
 ## Installation
 
