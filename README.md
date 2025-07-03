@@ -17,6 +17,7 @@ Before you begin, ensure you have the following installed:
 
 - [Node.js](https://nodejs.org/)
 - [npm](https://www.npmjs.com/)
+- [Docker](https://www.docker.com/)
 
 ## Installation
 
@@ -40,24 +41,22 @@ Follow these steps to set up the project:
    ```bash
    cp .env.example .env
    # Edit .env with your configuration see .env.example for reference
+   # When running docker make sure you update environment variables in the compose.yaml file
    ```
 
 4. **Start all services (includes automatic migration):**
 
    ```bash
-   # First time and ongoing - this handles everything
-   docker compose up --build
-
-   # Or run migration manually first if needed
-   docker compose run --rm migrate
+   docker compose up -w
    ```
 
    This will:
 
    - Start PostgreSQL
    - Run better-auth migrations automatically
-   - Start the API server (after migration completes)
+   - Start the Hono API server (after migration completes)
    - Start the React frontend
+   - track changes made in the client and server /src folders and live update the running container
 
    Services will be available at:
 
