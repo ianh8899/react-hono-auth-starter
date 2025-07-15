@@ -4,14 +4,16 @@ services:
   web:
     depends_on:
       - api
-
     build:
       context: .
       dockerfile: ./client/Dockerfile
-
     ports:
       - 5173:5173
-
+    env_file:
+      - .env
+    environment:
+      # Only VITE_ variables will be injected into Vite's build
+      VITE_STRIPE_PUBLISHABLE_KEY: ${VITE_STRIPE_PUBLISHABLE_KEY}
     develop:
       watch:
         - path: ./client/package.json
@@ -30,8 +32,10 @@ services:
     depends_on:
       postgres:
         condition: service_healthy
+    env_file:
+      - .env
     environment:
-      DATABASE_URL: postgres://postgres:password@postgres:5432/authdb
+      DATABASE_URL: ${DATABASE_URL}
     command: ["sh", "-c", "echo 'y' | npx @better-auth/cli migrate"]
     working_dir: /app/server
 
@@ -46,13 +50,15 @@ services:
       dockerfile: ./server/Dockerfile
     ports:
       - 3000:3000
+    env_file:
+      - .env
     environment:
-      BETTER_AUTH_SECRET: open-ssl-rand--base64-32
-      BETTER_AUTH_URL: http://localhost:3000
-      GITHUB_CLIENT_ID:
-      GITHUB_CLIENT_SECRET:
-      DATABASE_URL: postgres://postgres:password@postgres:5432/authdb
-
+      BETTER_AUTH_SECRET: ${BETTER_AUTH_SECRET}
+      BETTER_AUTH_URL: ${BETTER_AUTH_URL}
+      GITHUB_CLIENT_ID: ${GITHUB_CLIENT_ID}
+      GITHUB_CLIENT_SECRET: ${GITHUB_CLIENT_SECRET}
+      DATABASE_URL: ${DATABASE_URL}
+      DATABASE_PASSWORD: ${DATABASE_PASSWORD}
     develop:
       watch:
         - path: ./server/package.json
@@ -66,7 +72,7 @@ services:
     environment:
       POSTGRES_DB: authdb
       POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: password
+      POSTGRES_PASSWORD: ${DATABASE_PASSWORD}
       POSTGRES_HOST_AUTH_METHOD: md5
     ports:
       - 5432:5432
